@@ -68,3 +68,48 @@ int main() {
 // Realiza busca binária por nome, desde que a mochila esteja ordenada por nome.
 // Se encontrar, exibe os dados do item buscado.
 // Caso contrário, informa que não encontrou o item.
+
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 10
+
+typedef struct {
+    char nome[50];
+    char tipo[30];
+    int qtd;
+} Item;
+
+Item mochila[MAX];
+int total = 0;
+
+int main() {
+    int op;
+    do {
+        printf("\n1.Add 2.Del 3.List 4.Exit: ");
+        scanf("%d", &op); getchar();
+        
+        if (op == 1 && total < MAX) {
+            printf("Nome: "); fgets(mochila[total].nome, 50, stdin);
+            printf("Tipo: "); fgets(mochila[total].tipo, 30, stdin);
+            printf("Qtd: "); scanf("%d", &mochila[total].qtd); getchar();
+            mochila[total].nome[strcspn(mochila[total].nome, "\n")] = 0;
+            mochila[total].tipo[strcspn(mochila[total].tipo, "\n")] = 0;
+            total++;
+        }
+        else if (op == 2 && total > 0) {
+            char n[50]; printf("Nome: "); fgets(n, 50, stdin); n[strcspn(n, "\n")] = 0;
+            for (int i = 0; i < total; i++) {
+                if (strcmp(mochila[i].nome, n) == 0) {
+                    for (int j = i; j < total-1; j++) mochila[j] = mochila[j+1];
+                    total--; break;
+                }
+            }
+        }
+        else if (op == 3) {
+            for (int i = 0; i < total; i++) 
+                printf("%s | %s | %d\n", mochila[i].nome, mochila[i].tipo, mochila[i].qtd);
+        }
+    } while (op != 4);
+    return 0;
+}
